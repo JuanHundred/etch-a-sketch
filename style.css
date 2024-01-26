@@ -20,7 +20,26 @@ body {
 }
 
 #grid {
-    height: 704px;
-    width: 704px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 706px;
+    width: 970px;
     border: 1px solid grey;
+}
+
+.cell {
+    background-color: #eae8e8;
+    border: 0.5px solid rgb(158, 158, 158);
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 968px;
+}
+
+.regular {
+    background-color: #808080;
 }
