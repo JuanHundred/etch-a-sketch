@@ -1,0 +1,26 @@
+*,
+*::before,
+*::after {
+    padding: 0; 
+    margin: 0; 
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#grid {
+    height: 704px;
+    width: 704px;
+    border: 1px solid grey;
+}
