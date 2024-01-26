@@ -4,7 +4,7 @@ const grid = document.querySelector("#grid");
 // create div that will become the cell for the grid
 const cell = document.createElement("div");
 
-// buttons below
+// select all the buttons needed to the behavior of the grid and cells
 const smallButton = document.querySelector(".small");
 const mediumButton = document.querySelector(".medium");
 const largeButton = document.querySelector(".large");
@@ -14,22 +14,25 @@ const multiColorButton = document.querySelector(".multi-color");
 
 const erase = document.querySelector(".erase");
 
-const gridButtons = {
-    types: ["small", "regular"]
+// keep track of which buttons are pressed and their values 
+const gridActiveButtons = {
+    size: "small",
+    color: "regular"
 }
 
+// easily be able tor retrieve grid size depending on the value of the button the was pressed 
 const gridSize = {
-    "small": [16, 0],
-    "medium": [32, 1],
-    "large": [64, 2] 
+    "small": {rowAmount: 16, columnAmount: 0},
+    "medium": {rowAmount: 32, columnAmount: 1},
+    "large": {rowAmount: 64, columnAmount: 2}
 }
 
 // create cell depending on the size of the grid the user wants
-function createCell(dimension) {
-    const dimensions = (704 / dimension);
+function createCell(rowAmount) {
+    const dimension = (704 / rowAmount);
     cell.classList.add("cell");
-    cell.style.width = `${dimensions}px`;
-    cell.style.height = `${dimensions}px`;
+    cell.style.width = `${dimension}px`;
+    cell.style.height = `${dimension}px`;
 }
 
 // generate random color
@@ -42,19 +45,14 @@ function addListeners(parentNode){
     if (parentNode.hasChildNodes()){
         let children = parentNode.childNodes;
         for(const node of children){
-            node.addEventListener("mouseenter", () => {
-                if (gridButtons.types[1] === "regular"){
-                    node.style.backgroundColor = "#808080";
-                } else {
-                    node.style.backgroundColor = `${generateRandomColor()}`;
-                }
-            });
-            node.addEventListener("mouseout", () => {
-                if (gridButtons.types[1] === "regular"){
-                    node.style.backgroundColor = "#808080";
-                } else {
-                    node.style.backgroundColor = `${generateRandomColor()}`;
-                }
+            ["mouseenter", "mouseout"].forEach((event) => {
+                node.addEventListener(event, () => {
+                    if (gridActiveButtons.color === "regular"){
+                        node.style.backgroundColor = "#808080";
+                    } else {
+                        node.style.backgroundColor = `${generateRandomColor()}`;
+                    }
+                })
             });
         }
     }
@@ -67,8 +65,8 @@ const row = document.createElement("div");
 function createRow(cellMultiplier, node) {
     // calculate how many cells will be in the row
     // will be more cells than rows in the grid
-    const dimension = 22 * (2**cellMultiplier);
-    for(i = 0; i < dimension; i++){
+    const numberOfCells = 22 * (2**cellMultiplier);
+    for(i = 0; i < numberOfCells; i++){
         const cellClone = cell.cloneNode(true);
         node.appendChild(cellClone);
     }
@@ -81,61 +79,54 @@ function removeAllChildNodes(parentNode) {
 }
 
 // generates all the cells that will be in the grid
-function createGrid(dimension, gridSize, color){
+function createGrid(rowAmount, columnAmount){
     removeAllChildNodes(row);
     removeAllChildNodes(grid);
     // create the cell
-    createCell(dimension);
+    createCell(rowAmount);
     // add the class name to make the div flex
     row.classList.add("row");
-
-    createRow(gridSize, row);
-    for(i = 0; i < dimension; i++){
+    // generate a row full of cells
+    createRow(columnAmount, row);
+    for(i = 0; i < rowAmount; i++){
         const rowClone = row.cloneNode(true);
-        addListeners(rowClone, color);
+        addListeners(rowClone);
         grid.appendChild(rowClone);
     }
-    
 }
 
-// const selectAllCells = document.querySelectorAll(".cell");
-// function addListeners(){
-//     selectAllCells.forEach((cell) => {
-//         cell.addEventListener("mouseenter", () => {
-//             cell.style.backgroundColor = "#808080";
-//         });
-//         cell.addEventListener("mouseout", () => {
-//             cell.style.backgroundColor = "#808080";
-//         });
-//     });
-// }
+// helper function to improve readability and redundancy 
+function generateCells(){
+    createGrid(gridSize[gridActiveButtons.size].rowAmount, gridSize[gridActiveButtons.size].columnAmount);
+}
+
 createGrid(16, 0);
+
+
+// add event listeners to change the value of the appropriate keys in gridActiveButtons or change grid's appearance 
 smallButton.addEventListener("click", () => {
-    gridButtons.types[0] = "small";
-    createGrid(gridSize[gridButtons['types'][0]][0], gridSize[gridButtons['types'][0]][1]);
+    gridActiveButtons.size = "small";
+    generateCells();
 });
 
 mediumButton.addEventListener("click", () => {
-    gridButtons.types[0] = "medium";
-    createGrid(gridSize[gridButtons['types'][0]][0], gridSize[gridButtons['types'][0]][1]);
+    gridActiveButtons.size = "medium";
+    generateCells();
 });
 
 largeButton.addEventListener("click", () => {
-    gridButtons.types[0] = "large";
-    createGrid(gridSize[gridButtons['types'][0]][0], gridSize[gridButtons['types'][0]][1]);
+    gridActiveButtons.size = "large";
+    generateCells();
 });
 
 regularButton.addEventListener('click', () => {
-    gridButtons.types[1] = "regular";
-    createGrid(gridSize[gridButtons['types'][0]][0], gridSize[gridButtons['types'][0]][1]);
+    gridActiveButtons.color = "regular";
+    generateCells();
 });
 
 multiColorButton.addEventListener('click', () => {
-    gridButtons.types[1] = "colors";
-    createGrid(gridSize[gridButtons['types'][0]][0], gridSize[gridButtons['types'][0]][1]);
+    gridActiveButtons.color = "colors";
+    generateCells();
 });
 
-
-erase.addEventListener("click", () => {
-    
-});
+erase.addEventListener("click", () => generateCells());
