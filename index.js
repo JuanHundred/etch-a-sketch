@@ -91,10 +91,8 @@ function generateCells(){
 }
 
 createGrid(16, 0);
-
-// Event delegation for grid cells
-grid.addEventListener("mouseenter", (event) => {
-    // Check if the target of the event is a cell
+// Function to handle cell coloring
+function colorCell(event) {
     if (event.target.classList.contains("cell")) {
         const cell = event.target;
         if (gridActiveButtons.color === "regular-color") {
@@ -103,18 +101,69 @@ grid.addEventListener("mouseenter", (event) => {
             cell.style.backgroundColor = generateRandomColor();
         }
     }
-}, true); // capture event when going down the DOM tree
+}
 
-grid.addEventListener("mouseout", (event) => {
+// Function to add event listeners for coloring
+function addColoringListeners() {
+    grid.addEventListener("click", colorCell, true);
+    grid.addEventListener("mouseenter", colorCell, true);
+    grid.addEventListener("mouseout", colorCell, true);
+}
+
+// Function to remove event listeners for coloring
+function removeColoringListeners() {
+    grid.removeEventListener("mouseenter", colorCell, true);
+    grid.removeEventListener("mouseout", colorCell, true);
+}
+
+// Add mousedown and mouseup event listeners to the grid
+grid.addEventListener("mousedown", (event) => {
+    // Only add listeners if the target is a cell
     if (event.target.classList.contains("cell")) {
-        const cell = event.target;
-        if (gridActiveButtons.color === "regular-color") {
-            cell.style.backgroundColor = "#808080";
-        } else {
-            cell.style.backgroundColor = generateRandomColor();
-        }
+        addColoringListeners();
     }
+
+    // Add mouseup listener to the document to handle the case when the mouse is released outside the grid
+    document.addEventListener("mouseup", () => {
+        removeColoringListeners();
+    }, { once: true }); // Use the { once: true } option so it automatically removes itself
 }, true);
+
+// // Event delegation for grid cells
+// grid.addEventListener("mousedown", (event) => {
+//     grid.addEventListener("mouseenter", (event1) => {
+//         // Check if the target of the event is a cell
+//         if (event1.target.classList.contains("cell")) {
+//             const cell = event1.target;
+//             if (gridActiveButtons.color === "regular-color") {
+//                 cell.style.backgroundColor = "#808080";
+//             } else {
+//                 cell.style.backgroundColor = generateRandomColor();
+//             }
+//         }
+//     }, true);
+//     grid.addEventListener("mouseout", (event2) => {
+//         if (event2.target.classList.contains("cell")) {
+//             const cell = event2.target;
+//             if (gridActiveButtons.color === "regular-color") {
+//                 cell.style.backgroundColor = "#808080";
+//             } else {
+//                 cell.style.backgroundColor = generateRandomColor();
+//             }
+//         }
+//     }, true);
+// }, true); // capture event when going down the DOM tree
+
+// grid.addEventListener("mouseout", (event) => {
+//     if (event.target.classList.contains("cell")) {
+//         const cell = event.target;
+//         if (gridActiveButtons.color === "regular-color") {
+//             cell.style.backgroundColor = "#808080";
+//         } else {
+//             cell.style.backgroundColor = generateRandomColor();
+//         }
+//     }
+// }, true);
 
 
 // add event listeners to change the value of the appropriate keys in gridActiveButtons or change grid's appearance 
