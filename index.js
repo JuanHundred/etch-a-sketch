@@ -48,24 +48,6 @@ function generateRandomColor() {
     return '#' + Math.floor(Math.random()*16777215).toString(16);
 }
 
-// add event listeners to every clone cell created, as cloning nodes doesn't copy event listeners 
-function addListeners(parentNode){
-    if (parentNode.hasChildNodes()){
-        let children = parentNode.childNodes;
-        for(const node of children){
-            ["mouseenter", "mouseout"].forEach((event) => {
-                node.addEventListener(event, () => {
-                    if (gridActiveButtons.color === "regular-color"){
-                        node.style.backgroundColor = "#808080";
-                    } else {
-                        node.style.backgroundColor = `${generateRandomColor()}`;
-                    }
-                })
-            });
-        }
-    }
-}
-
 // create parent node of all the cloned cells that will become a row
 const row = document.createElement("div");
 
@@ -98,7 +80,7 @@ function createGrid(rowAmount, columnAmount){
     createRow(columnAmount, row);
     for(i = 0; i < rowAmount; i++){
         const rowClone = row.cloneNode(true);
-        addListeners(rowClone);
+        // addListeners(rowClone);
         grid.appendChild(rowClone);
     }
 }
@@ -109,6 +91,30 @@ function generateCells(){
 }
 
 createGrid(16, 0);
+
+// Event delegation for grid cells
+grid.addEventListener("mouseenter", (event) => {
+    // Check if the target of the event is a cell
+    if (event.target.classList.contains("cell")) {
+        const cell = event.target;
+        if (gridActiveButtons.color === "regular-color") {
+            cell.style.backgroundColor = "#808080";
+        } else {
+            cell.style.backgroundColor = generateRandomColor();
+        }
+    }
+}, true); // capture event when going down the DOM tree
+
+grid.addEventListener("mouseout", (event) => {
+    if (event.target.classList.contains("cell")) {
+        const cell = event.target;
+        if (gridActiveButtons.color === "regular-color") {
+            cell.style.backgroundColor = "#808080";
+        } else {
+            cell.style.backgroundColor = generateRandomColor();
+        }
+    }
+}, true);
 
 
 // add event listeners to change the value of the appropriate keys in gridActiveButtons or change grid's appearance 
