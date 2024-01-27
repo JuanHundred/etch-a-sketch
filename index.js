@@ -17,7 +17,7 @@ const erase = document.querySelector(".erase");
 // keep track of which buttons are pressed and their values 
 const gridActiveButtons = {
     size: "small",
-    color: "regular"
+    color: "regular-color"
 }
 
 // easily be able tor retrieve grid size depending on the value of the button the was pressed 
@@ -25,6 +25,14 @@ const gridSize = {
     "small": {rowAmount: 16, columnAmount: 0},
     "medium": {rowAmount: 32, columnAmount: 1},
     "large": {rowAmount: 64, columnAmount: 2}
+}
+
+const buttons = {
+    "small": smallButton,
+    "medium": mediumButton,
+    "large": largeButton,
+    "regular-color": regularButton,
+    "multi-color": multiColorButton
 }
 
 // create cell depending on the size of the grid the user wants
@@ -105,27 +113,37 @@ createGrid(16, 0);
 
 // add event listeners to change the value of the appropriate keys in gridActiveButtons or change grid's appearance 
 smallButton.addEventListener("click", () => {
+    buttons[gridActiveButtons.size].classList.remove("selected");
+    smallButton.classList.add("selected");
     gridActiveButtons.size = "small";
     generateCells();
 });
 
 mediumButton.addEventListener("click", () => {
+    buttons[gridActiveButtons.size].classList.remove("selected");
+    mediumButton.classList.add("selected");
     gridActiveButtons.size = "medium";
     generateCells();
 });
 
 largeButton.addEventListener("click", () => {
+    buttons[gridActiveButtons.size].classList.remove("selected");
+    largeButton.classList.add("selected");
     gridActiveButtons.size = "large";
     generateCells();
 });
 
 regularButton.addEventListener('click', () => {
+    buttons[gridActiveButtons.color].classList.remove("selected");
+    regularButton.classList.add("selected");
     gridActiveButtons.color = "regular";
     generateCells();
 });
 
 multiColorButton.addEventListener('click', () => {
-    gridActiveButtons.color = "colors";
+    buttons[gridActiveButtons.color].classList.remove("selected");
+    multiColorButton.classList.add("selected");
+    gridActiveButtons.color = "multi-color";
     generateCells();
 });
 
