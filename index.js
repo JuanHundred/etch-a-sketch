@@ -55,7 +55,7 @@ function addListeners(parentNode){
         for(const node of children){
             ["mouseenter", "mouseout"].forEach((event) => {
                 node.addEventListener(event, () => {
-                    if (gridActiveButtons.color === "regular"){
+                    if (gridActiveButtons.color === "regular-color"){
                         node.style.backgroundColor = "#808080";
                     } else {
                         node.style.backgroundColor = `${generateRandomColor()}`;
@@ -136,7 +136,7 @@ largeButton.addEventListener("click", () => {
 regularButton.addEventListener('click', () => {
     buttons[gridActiveButtons.color].classList.remove("selected");
     regularButton.classList.add("selected");
-    gridActiveButtons.color = "regular";
+    gridActiveButtons.color = "regular-color";
     generateCells();
 });
 
