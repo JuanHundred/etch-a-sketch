@@ -103,8 +103,7 @@ button:hover {
     color: #C12D2D;
 }
 
-.small,
-.regular-color {
+.selected {
     background-color: #CBA328;
     color: #C12D2D;
 }
