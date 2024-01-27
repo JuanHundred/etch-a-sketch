@@ -62,3 +62,49 @@ body {
 .regular {
     background-color: #808080;
 }
+
+.controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.grid-sizes,
+.colors {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.grid-sizes > p,
+.colors > p{
+    font-size: 20px;
+    font-weight: 600;
+    color: #CBA328;
+}
+
+button {
+    cursor: pointer;
+    padding: 10px 30px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+button:hover {
+    background-color: #CBA328;
+    color: #C12D2D;
+}
+
+.erase {
+    color: #C12D2D;
+}
+
+.small,
+.regular-color {
+    background-color: #CBA328;
+    color: #C12D2D;
+}
